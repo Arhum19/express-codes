@@ -27,7 +27,7 @@ app.get("/user/:value", (req, res) => {
   }
 
   user
-    ? res.send(`Hello ${user.name} From Express!!`)
+    ? res.json(`Hello ${user.name} From Express!!`)
     : res.status(404).send("User not found");
 });
 
