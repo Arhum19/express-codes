@@ -1,5 +1,6 @@
 const express = require("express");
 const app = express();
+app.use(express.json()); //middleware
 let names = [
   { id: 1, name: "Arhum" },
   { id: 2, name: "Ali" },
@@ -31,6 +32,24 @@ app.get("/user/:value", (req, res) => {
     : res.status(404).send("User not found");
 });
 
-app.listen(3000, () => {
-  console.log("Server is running on http://localhost:3000");
+app.post("/user", (req, res) => {
+  const user = {
+    id: names.length + 1,
+    name: req.body.name,
+  };
+  names.push(user);
+  res.send("user added successfully");
+});
+
+// app.put("/user/:id", (req, res) => {
+//   const id = parseInt(req.params.id);
+//   const user = names.find((n) => n.id === id);
+//   if (!user) return res.status(404).send("User not found");
+
+//   user.name = req.body.name;
+//   res.send("User updated successfully");
+// });
+
+app.listen(3000, () => {  
+  console.log("Server is running on port http://localhost:3000");
 });
