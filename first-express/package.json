@@ -4,6 +4,7 @@
   "description": "my first express file",
   "main": "server.js",
   "scripts": {
+    "start": "node book-manger.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [

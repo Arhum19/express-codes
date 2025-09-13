@@ -1,0 +1,32 @@
+[
+  {
+    "id": 1,
+    "name": "Lord of the Rings",
+    "author": "J.R.R. Tolkien"
+  },
+  {
+    "id": 2,
+    "name": "Harry Potter",
+    "author": "J.K. Rowling"
+  },
+  {
+    "id": 3,
+    "name": "The Alchemist",
+    "author": "Paulo Coelho"
+  },
+  {
+    "id": 4,
+    "name": "The Great Gatsby",
+    "author": "F. Scott Fitzgerald"
+  },
+  {
+    "id": 5,
+    "name": "game of thrones",
+    "author": "arhum"
+  },
+  {
+    "id": 6,
+    "name": "perks of karachi",
+    "author": "noor"
+  }
+]
