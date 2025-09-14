@@ -11,25 +11,31 @@ app.use(express.static("public"));
 
 //2. third party middleware
 app.use(cors());
-app.use(morgan("tiny"));
+// app.use(morgan("tiny"));
 
-//3. custom middleware
-app.use((req, res, next) => {
-  app.requestTime = new Date().toISOString();
-  console.log("Request Time:", app.requestTime);
-  next();
-});
+// 3. custom middleware
+// app.use((req, res, next) => {
+//   app.requestTime = new Date().toISOString();
+//   console.log("Request Time:", app.requestTime);
+//   next();
+// });
 
 
 app.get("/about", (req, res) => {
   res.send("Hello From Express!!");
 });
 
+const adminauth = (req, res, next) => {
+  const admin = false;
+  if (admin) {
+    next();
+  } else {
+    res.send("You are not authorized to access this page");
+  }
+};
+
 //4. application level middleware
-app.get("/admin", (req, res, next) => {
-  console.log("Admin Middleware Called");
-  next();
-}, (req, res) => {
+app.get("/admin", adminauth, (req, res) => {
   res.send("Hello Admin, Welcome to the admin page.");
 }
 );
