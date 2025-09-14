@@ -3,6 +3,7 @@ const morgan = require("morgan");
 const cors = require("cors");
 
 const app = express();
+name = ["arhum", "ali", "ahmed", "ahsan"];
 
 //1. built in middleware
 app.use(express.json());
@@ -33,6 +34,20 @@ app.get("/admin", (req, res, next) => {
 }
 );
 
+//router level middleware
+const router = express.Router();
+router.use((req, res, next) => {
+  console.log("Router Middleware Called");
+  next();
+});
+router.get("/users", (req, res) => {
+  res.send(name);
+});
+app.use("/api", router);
+
+
+
 app.listen(3000, () => {
   console.log("Server is running on port http://localhost:3000");
 });
+
