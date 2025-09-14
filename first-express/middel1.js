@@ -24,6 +24,15 @@ app.get("/about", (req, res) => {
   res.send("Hello From Express!!");
 });
 
+//4. application level middleware
+app.get("/admin", (req, res, next) => {
+  console.log("Admin Middleware Called");
+  next();
+}, (req, res) => {
+  res.send("Hello Admin, Welcome to the admin page.");
+}
+);
+
 app.listen(3000, () => {
   console.log("Server is running on port http://localhost:3000");
 });
