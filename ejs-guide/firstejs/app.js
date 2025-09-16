@@ -4,7 +4,7 @@ const app = express();
 const port = process.env.PORT || 3000;
 
 app.set("view engine", "ejs");
-app.set("views", path.join(__dirname, "firstejs", "views"));
+app.set("views", path.join(__dirname, "views"));
 
 let user = {
   name: "Arhum Noor",
@@ -12,6 +12,8 @@ let user = {
   city: "Karachi Pakistan",
   isactive: true,
 };
+let userlang=["JavaScript", "Python", "C++", "Java"];
+let admin = [{ adminname: "Bassam", isadmin: false}];
 
 //middleware to serve static files
 app.use(express.static(path.join(__dirname, "public")));
@@ -26,7 +28,7 @@ app.get("/about", (req, res) => {
 });
 // variable route
 app.get("/variable", (req, res) => {
-  res.render("variable", { users: [user] });
+  res.render("variable", { users: [user], admins: admin , userlang:userlang});
 });
 
 app.listen(port, () => {
