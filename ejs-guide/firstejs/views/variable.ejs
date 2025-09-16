@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Variable Page</title>
+</head>
+<body>
+    <h1>Variable Page</h1>
+    <p>This is the variable page.</p>
+    <a href="/">Go back to Home</a>
+
+    <section>
+        <h1>User Information</h1>
+        <% const greeting = "Hello! " + users[0].name %>
+        <% const ageMessage = "You are " + users[0].age + " years old." %>
+        <% const locationMessage = "You live in " + users[0].city + "." %>
+        <p><%= greeting %></p>
+        <p><%= ageMessage %></p>
+        <p><%= locationMessage %></p>
+        <p>Status: <%= users[0].isactive ? "Active" : "Inactive" %></p>
+    </section>
+    </ul>
+    
+</body>
+</html>

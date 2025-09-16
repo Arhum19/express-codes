@@ -1,5 +1,7 @@
-const posts = [{ id: '1', title: 'First Post' },
-     { id: '2', title: 'Second Post' }];
+const posts = [
+  { id: "1", title: "First Post" },
+  { id: "2", title: "Second Post" },
+];
 const postrouter = require("express").Router();
 postrouter.get("/", (req, res) => {
   res.json(posts);
@@ -11,7 +13,7 @@ postrouter.get("/:id", (req, res) => {
 });
 postrouter.post("/", (req, res) => {
   const newPost = {
-    id: (posts.length + 1).toString(), 
+    id: (posts.length + 1).toString(),
     title: req.body.title,
   };
   posts.push(newPost);
