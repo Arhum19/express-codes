@@ -1,4 +1,5 @@
 const express = require("express");
+const expressEjsLayouts = require("express-ejs-layouts");
 const path = require("path");
 const app = express();
 const port = process.env.PORT || 3000;
@@ -6,6 +7,9 @@ const port = process.env.PORT || 3000;
 app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "views"));
 app.use(express.urlencoded({ extended: true }));
+app.use(expressEjsLayouts);
+//middle to set layout
+app.set("layout", "main");
 
 // sample data
 let user = {
@@ -22,16 +26,16 @@ app.use(express.static(path.join(__dirname, "public")));
 
 // home route
 app.get("/", (req, res) => {
-  res.render("home");
+  res.render("home", { title: "Home Page" });
 });
 
 // about route
 app.get("/about", (req, res) => {
-  res.render("about");
+  res.render("about", { title: "About Us" });
 });
 // variable route
 app.get("/variable", (req, res) => {
-  res.render("variable", { users: [user], admins: admin, userlang: userlang });
+  res.render("variable", { title: "Variable Page", users: [user], admins: admin, userlang: userlang });
 });
 
 // contact route
