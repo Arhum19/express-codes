@@ -41,7 +41,7 @@ app.get("/contact", (req, res) => {
 
 //contact form route
 app.post("/contact", (req, res) => {
-  console.log("Form has been submitted", req.body);
+  console.log("Form has been submitted also shown in web console", req.body);
   res.render("contact-show", { title: "Contact Us", formData: req.body });
 });
 
