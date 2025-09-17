@@ -42,7 +42,7 @@ app.get("/contact", (req, res) => {
 //contact form route
 app.post("/contact", (req, res) => {
   console.log("Form has been submitted also shown in web console", req.body);
-  res.render("contact-show", { title: "Contact Us", formData: req.body });
+  res.render("contact-show", { title: "Contact Us", form: req.body });
 });
 
 // 404 route
