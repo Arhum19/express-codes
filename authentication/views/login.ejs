@@ -33,7 +33,6 @@
               name="username"
               id="username"
               placeholder="Enter your username"
-              value="arhum"
             />
           </div>
           <div class="mb-3">
@@ -43,7 +42,6 @@
               class="form-control"
               name="password"
               id="password"
-              value="123"
               placeholder="Enter your password"
             />
           </div>
@@ -53,5 +51,10 @@
         </form>
       </div>
     </div>
+    <% if (error) { %>
+    <script>
+      alert("<%= error %>");
+    </script>
+    <% } %>
   </body>
 </html>
