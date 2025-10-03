@@ -1,36 +1,15 @@
 const express = require("express");
 const cookieParser = require("cookie-parser");
-const session = require("express-session");
-const mongoconnect = require("connect-mongo");
 const mongoose = require("mongoose");
 const dotenv = require("dotenv");
 const bcrypt = require("bcryptjs");
+const jwt = require("jsonwebtoken");
 const app = express();
 const port = 3000;
 let currentuser;
 
 app.set("view engine", "ejs");
 dotenv.config();
-app.use(
-  session({
-    secret: process.env.Session_key,
-    resave: false,
-    saveUninitialized: true,
-    store: mongoconnect.create({
-      mongoUrl: "mongodb://localhost:27017/authDB",
-      collectionName: "sessions",
-    }),
-    cookie: { maxAge: 2 * 60 * 60 * 1000 }, // 2 hours
-  })
-);
-mongoose
-  .connect("mongodb://localhost:27017/authDB")
-  .then(() => {
-    console.log("Connected to MongoDB");
-  })
-  .catch((err) => {
-    console.error("Failed to connect to MongoDB", err);
-  });
 
 const userSchema = new mongoose.Schema({
   username: String,
@@ -50,8 +29,6 @@ app.use(cookieParser());
 app.get("/", (req, res) => {
   res.render("home", { error: null });
 });
-
-
 
 //register route
 app.get("/register", (req, res) => {
@@ -86,7 +63,6 @@ app.get("/login", (req, res) => {
   res.render("login", { error: null });
 });
 
-
 app.post("/login", async (req, res) => {
   const { username, password } = req.body;
 
@@ -105,10 +81,14 @@ app.post("/login", async (req, res) => {
       return res.render("login", { error: "Invalid password" });
     }
 
-    req.session.userdata = {
+    //token logic
+    const payload = {
       username: user.username,
+      id: user._id,
       role: user.role,
     };
+
+    const token = jwt.sign(payload, process.env.Token_key, { expiresIn: "1h" });
 
     return res.redirect("/dashboard");
   } catch (err) {
@@ -119,8 +99,6 @@ app.post("/login", async (req, res) => {
 
 // Dashboard route
 app.get("/dashboard", (req, res) => {
-  const userdata = req.session.userdata;
-
   if (userdata) {
     return res.render("dashboard", {
       username: userdata.username,
@@ -134,7 +112,6 @@ app.get("/dashboard", (req, res) => {
 
 // Admin route
 app.get("/admin", (req, res) => {
-  const userdata = req.session.userdata;
   if (userdata && userdata.role === "admin") {
     return res.render("admin", { username: userdata.username });
   }
@@ -145,7 +122,6 @@ app.get("/admin", (req, res) => {
 
 //logout route
 app.get("/logout", (req, res) => {
-  req.session.destroy();
   res.redirect("/login");
 });
 
