@@ -1,5 +1,4 @@
 const express = require("express");
-const cookieParser = require("cookie-parser");
 const mongoose = require("mongoose");
 const bcrypt = require("bcryptjs");
 const app = express();
@@ -33,6 +32,7 @@ app.use(cookieParser());
 
 //home route
 app.get("/", (req, res) => {
+  console.log(req.session);
   res.render("home", { error: null });
 });
 

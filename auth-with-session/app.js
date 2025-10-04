@@ -48,12 +48,10 @@ app.use(cookieParser());
 
 //home route
 app.get("/", (req, res) => {
-  console.log(req.session);
-
   res.render("home", { error: null });
 });
 
-//!is login authenticated middleware
+
 
 //register route
 app.get("/register", (req, res) => {
@@ -87,6 +85,7 @@ app.post("/register", async (req, res) => {
 app.get("/login", (req, res) => {
   res.render("login", { error: null });
 });
+
 
 app.post("/login", async (req, res) => {
   const { username, password } = req.body;
