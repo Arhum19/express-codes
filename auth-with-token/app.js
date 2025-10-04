@@ -21,6 +21,15 @@ const userSchema = new mongoose.Schema({
   },
 });
 
+mongoose
+  .connect("mongodb://localhost:27017/authDB")
+  .then(() => {
+    console.log("Connected to MongoDB");
+  })
+  .catch((err) => {
+    console.error("Failed to connect to MongoDB", err);
+  });
+
 const User = mongoose.model("User", userSchema);
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
@@ -125,16 +134,13 @@ app.post("/login", async (req, res) => {
 
 // Dashboard route
 app.get("/dashboard",authenticateToken, (req, res) => {
-  if (userdata) {
-    return res.render("dashboard", {
-      username: userdata.username,
-      role: userdata.role,
+  
+     res.render("dashboard", {
+      username: req.user.username,
+      role: req.user.role,
+      });
     });
-  }
 
-  // If no cookie, force login
-  return res.redirect("/login");
-});
 
 // Admin route
 app.get("/admin",authenticateToken ,(req, res) => {
