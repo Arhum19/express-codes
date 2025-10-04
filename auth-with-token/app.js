@@ -25,6 +25,25 @@ const User = mongoose.model("User", userSchema);
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 
+//midleware for routes
+function authenticateToken(req, res, next) {
+  try {
+    const token = req.cookies.authtoken;
+    if (!token) {
+      return res.redirect("/login");
+    }
+    const decoded = jwt.verify(token, process.env.Token_key);
+    req.user = decoded;
+    next();
+  } catch (err) {
+    console.error("Error occurred during token verification:", err);
+    return res.redirect("/login");
+  }
+}
+
+
+
+
 //home route
 app.get("/", (req, res) => {
   res.render("home", { error: null });
@@ -90,6 +109,13 @@ app.post("/login", async (req, res) => {
 
     const token = jwt.sign(payload, process.env.Token_key, { expiresIn: "1h" });
 
+    res.cookie("authtoken", token,{
+      httpOnly: true,
+      expires: new Date(Date.now() + 3600000), // 1 hour
+      secure: false, 
+      sameSite: "strict",
+    });
+
     return res.redirect("/dashboard");
   } catch (err) {
     console.error("Error during login:", err);
@@ -98,7 +124,7 @@ app.post("/login", async (req, res) => {
 });
 
 // Dashboard route
-app.get("/dashboard", (req, res) => {
+app.get("/dashboard",authenticateToken, (req, res) => {
   if (userdata) {
     return res.render("dashboard", {
       username: userdata.username,
@@ -111,17 +137,17 @@ app.get("/dashboard", (req, res) => {
 });
 
 // Admin route
-app.get("/admin", (req, res) => {
-  if (userdata && userdata.role === "admin") {
-    return res.render("admin", { username: userdata.username });
+app.get("/admin",authenticateToken ,(req, res) => {
+  if (req.user && req.user.role === "admin") {
+    return res.render("admin", { username: req.user.username });
   }
-
   // If not logged in or not admin, force login
   return res.redirect("/login");
 });
 
 //logout route
 app.get("/logout", (req, res) => {
+  res.clearCookie("authtoken");
   res.redirect("/login");
 });
 
